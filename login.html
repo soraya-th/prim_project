@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#102a43">
+	<title>เข้าสู่ระบบ | Prim Information System</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
+
+		:root {
+			--navy: #102a43;
+			--navy-deep: #081b2d;
+			--blue: #1677ff;
+			--blue-soft: #eaf3ff;
+			--ink: #16283a;
+			--muted: #6e8092;
+			--line: #dce5ed;
+			--paper: #ffffff;
+			--bg: #f4f8fb;
+			--danger: #c0392b;
+			--shadow: 0 24px 70px rgba(16, 42, 67, 0.16);
+		}
+
+		* { box-sizing: border-box; }
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			color: var(--ink);
+			background: var(--bg);
+			font-family: 'DM Sans', 'Noto Sans Thai', sans-serif;
+		}
+
+		.page {
+			display: grid;
+			grid-template-columns: minmax(380px, 0.95fr) minmax(520px, 1.05fr);
+			min-height: 100vh;
+		}
+
+		.brand-panel {
+			position: relative;
+			display: flex;
+			align-items: center;
+			overflow: hidden;
+			padding: clamp(38px, 7vw, 96px);
+			color: #fff;
+			background: var(--navy);
+			isolation: isolate;
+		}
+
+		.brand-panel::before,
+		.brand-panel::after {
+			position: absolute;
+			z-index: -1;
+			content: '';
+			border: 1px solid rgba(131, 192, 255, 0.22);
+			border-radius: 50%;
+		}
+
+		.brand-panel::before {
+			width: 620px;
+			height: 620px;
+			right: -265px;
+			top: -170px;
+		}
+
+		.brand-panel::after {
+			width: 430px;
+			height: 430px;
+			left: -265px;
+			bottom: -190px;
+		}
+
+		.brand-content { max-width: 510px; }
+
+		.brand-mark {
+			display: inline-flex;
+			align-items: center;
+			gap: 12px;
+			margin-bottom: clamp(56px, 10vh, 120px);
+			font-size: 18px;
+			font-weight: 700;
+			letter-spacing: 0.02em;
+		}
+
+		.mark-icon {
+			display: grid;
+			width: 42px;
+			height: 42px;
+			place-items: center;
+			border: 1px solid rgba(255, 255, 255, 0.26);
+			border-radius: 12px;
+			background: rgba(255, 255, 255, 0.1);
+		}
+
+		.brand-content h1 {
+			max-width: 480px;
+			margin: 0 0 24px;
+			font-size: clamp(36px, 4.1vw, 62px);
+			line-height: 1.1;
+			letter-spacing: -0.03em;
+		}
+
+		.brand-content > p {
+			max-width: 430px;
+			margin: 0;
+			color: #b7c9da;
+			font-size: 17px;
+			line-height: 1.75;
+		}
+
+		.trust-line {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin-top: 48px;
+			color: #dbe8f4;
+			font-size: 13px;
+		}
+
+		.trust-line svg { color: #70c8a4; }
+
+		.login-panel {
+			display: grid;
+			place-items: center;
+			padding: 40px 28px;
+			background: #fbfdff;
+		}
+
+		.login-card {
+			width: min(100%, 450px);
+			padding: clamp(28px, 4vw, 52px);
+			border: 1px solid #e4ecf3;
+			border-radius: 18px;
+			background: var(--paper);
+			box-shadow: var(--shadow);
+			animation: rise-in 650ms ease both;
+		}
+
+		.eyebrow {
+			margin: 0 0 12px;
+			color: var(--blue);
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+		}
+
+		.login-card h2 {
+			margin: 0;
+			color: var(--navy);
+			font-size: 30px;
+			letter-spacing: -0.03em;
+		}
+
+		.intro {
+			margin: 10px 0 30px;
+			color: var(--muted);
+			font-size: 14px;
+			line-height: 1.65;
+		}
+
+		.field { margin-bottom: 19px; }
+
+		label {
+			display: block;
+			margin-bottom: 8px;
+			color: #31495f;
+			font-size: 13px;
+			font-weight: 600;
+		}
+
+		.input-wrap { position: relative; }
+
+		.input-wrap > svg {
+			position: absolute;
+			top: 15px;
+			left: 15px;
+			color: #8294a6;
+			pointer-events: none;
+		}
+
+		input[type='email'],
+		input[type='password'],
+		input[type='text'] {
+			width: 100%;
+			height: 50px;
+			padding: 0 46px;
+			border: 1px solid var(--line);
+			border-radius: 9px;
+			outline: none;
+			color: var(--ink);
+			background: #fcfeff;
+			font: inherit;
+			transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+		}
+
+		input:focus {
+			border-color: var(--blue);
+			background: #fff;
+			box-shadow: 0 0 0 4px rgba(22, 119, 255, 0.12);
+		}
+
+		.toggle-password {
+			position: absolute;
+			top: 7px;
+			right: 7px;
+			display: grid;
+			width: 36px;
+			height: 36px;
+			padding: 0;
+			place-items: center;
+			border: 0;
+			border-radius: 7px;
+			color: #7890a4;
+			background: transparent;
+			cursor: pointer;
+		}
+
+		.toggle-password:hover { color: var(--blue); background: var(--blue-soft); }
+
+		.form-options {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			margin: 5px 0 27px;
+		}
+
+		.remember {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin: 0;
+			color: var(--muted);
+			font-size: 13px;
+			font-weight: 400;
+			cursor: pointer;
+		}
+
+		.remember input { accent-color: var(--blue); }
+
+		a {
+			color: var(--blue);
+			font-size: 13px;
+			font-weight: 600;
+			text-decoration: none;
+		}
+
+		a:hover { text-decoration: underline; }
+
+		.submit-button {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			width: 100%;
+			min-height: 50px;
+			border: 0;
+			border-radius: 9px;
+			color: #fff;
+			background: var(--blue);
+			box-shadow: 0 9px 18px rgba(22, 119, 255, 0.2);
+			font: inherit;
+			font-size: 14px;
+			font-weight: 700;
+			cursor: pointer;
+			transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+		}
+
+		.submit-button:hover { background: #0b64df; box-shadow: 0 12px 24px rgba(22, 119, 255, 0.28); transform: translateY(-1px); }
+		.submit-button:active { transform: translateY(0); }
+
+		.divider {
+			display: flex;
+			align-items: center;
+			gap: 14px;
+			margin: 28px 0 23px;
+			color: #9aabb9;
+			font-size: 12px;
+		}
+
+		.divider::before,
+		.divider::after { flex: 1; height: 1px; content: ''; background: #e6edf3; }
+
+		.signup { margin: 0; color: var(--muted); text-align: center; font-size: 13px; }
+		.signup a { margin-left: 4px; }
+
+		.message {
+			display: none;
+			margin-top: 15px;
+			padding: 11px 13px;
+			border-radius: 8px;
+			color: var(--danger);
+			background: #fff1ef;
+			font-size: 12px;
+			line-height: 1.5;
+		}
+
+		.message.visible { display: block; }
+
+		@keyframes rise-in {
+			from { opacity: 0; transform: translateY(14px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+
+		@media (max-width: 820px) {
+			.page { grid-template-columns: 1fr; }
+			.brand-panel { min-height: 340px; padding: 38px 28px; }
+			.brand-mark { margin-bottom: 38px; }
+			.brand-content h1 { font-size: clamp(34px, 8vw, 48px); }
+			.brand-content > p { font-size: 15px; }
+			.trust-line { margin-top: 26px; }
+			.login-panel { padding: 32px 18px 48px; }
+		}
+
+		@media (max-width: 430px) {
+			.brand-panel { min-height: 315px; }
+			.brand-content h1 { margin-bottom: 15px; }
+			.brand-content > p { line-height: 1.6; }
+			.login-card { padding: 27px 21px; }
+			.form-options { align-items: flex-start; flex-direction: column; }
+		}
+	</style>
+</head>
+<body>
+	<main class="page">
+		<section class="brand-panel" aria-label="เกี่ยวกับระบบ">
+			<div class="brand-content">
+				<div class="brand-mark">
+					<span class="mark-icon" aria-hidden="true">
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9l8-5 8 5v10"/><path d="M8 19v-6h8v6M3 19h18"/></svg>
+					</span>
+					<span>PRIM SYSTEM</span>
+				</div>
+				<h1>จัดการข้อมูลของคุณ<br>ได้อย่างมั่นใจ</h1>
+				<p>ระบบสารสนเทศที่ช่วยให้ทีมของคุณทำงานเป็นระบบ เข้าถึงข้อมูลสำคัญได้รวดเร็ว และพร้อมเติบโตไปด้วยกัน</p>
+				<div class="trust-line">
+					<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+					<span>ปลอดภัย ใช้งานง่าย พร้อมสำหรับทุกทีม</span>
+				</div>
+			</div>
+		</section>
+
+		<section class="login-panel">
+			<div class="login-card">
+				<p class="eyebrow">Welcome back</p>
+				<h2>เข้าสู่ระบบ</h2>
+				<p class="intro">กรอกข้อมูลของคุณเพื่อเข้าสู่พื้นที่ทำงาน</p>
+
+				<form id="loginForm" novalidate>
+					<div class="field">
+						<label for="email">อีเมล</label>
+						<div class="input-wrap">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+							<input id="email" name="email" type="email" autocomplete="email" placeholder="name@company.com" required>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="password">รหัสผ่าน</label>
+						<div class="input-wrap">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+							<input id="password" name="password" type="password" autocomplete="current-password" placeholder="กรอกรหัสผ่านของคุณ" minlength="6" required>
+							<button class="toggle-password" id="togglePassword" type="button" aria-label="แสดงรหัสผ่าน" title="แสดงรหัสผ่าน">
+								<svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+							</button>
+						</div>
+					</div>
+
+					<div class="form-options">
+						<label class="remember"><input type="checkbox" name="remember"> จดจำการเข้าสู่ระบบ</label>
+						<a href="#forgot" id="forgotLink">ลืมรหัสผ่าน?</a>
+					</div>
+
+					<button class="submit-button" type="submit">เข้าสู่ระบบ <span aria-hidden="true">&#8594;</span></button>
+					<div class="message" id="formMessage" role="alert"></div>
+				</form>
+
+				<div class="divider"><span>หรือ</span></div>
+				<p class="signup">ยังไม่มีบัญชี? <a href="#signup" id="signupLink">สร้างบัญชีใหม่</a></p>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		const passwordInput = document.getElementById('password');
+		const togglePassword = document.getElementById('togglePassword');
+		const form = document.getElementById('loginForm');
+		const formMessage = document.getElementById('formMessage');
+
+		togglePassword.addEventListener('click', () => {
+			const isPassword = passwordInput.type === 'password';
+			passwordInput.type = isPassword ? 'text' : 'password';
+			togglePassword.setAttribute('aria-label', isPassword ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน');
+			togglePassword.setAttribute('title', isPassword ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน');
+		});
+
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			formMessage.classList.remove('visible');
+
+			if (!form.checkValidity()) {
+				formMessage.textContent = 'กรุณาตรวจสอบอีเมลและรหัสผ่านให้ถูกต้อง';
+				formMessage.classList.add('visible');
+				form.querySelector(':invalid').focus();
+				return;
+			}
+
+			formMessage.style.color = '#24704e';
+			formMessage.style.background = '#edf9f3';
+			formMessage.textContent = 'ข้อมูลถูกต้องแล้ว กำลังนำคุณเข้าสู่ระบบ...';
+			formMessage.classList.add('visible');
+		});
+	</script>
+</body>
+</html>
